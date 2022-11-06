@@ -1,72 +1,69 @@
-import * as React from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import React from "react";
+import { Box, Button, Typography } from "@mui/material";
 import { ICategory } from "../types";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-interface IPropTypes {
+interface IPropType {
   categories: ICategory[];
 }
 
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
+const Tabs = ({ categories }: IPropType) => {
+  const router = useRouter();
+  const isActiveLink = (category: ICategory) => {
+    return category.attributes.Slug === router.query.category;
+  };
   return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
+    <Box
+      sx={{
+        my: 8,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        borderBottom: "1px solid #eaeaea",
+      }}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
-
-export default function BasicTabs({ categories }: IPropTypes) {
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
-  return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          gap: "20px",
+        }}
+      >
+        <Box
+          sx={{
+            mr: 3,
+            pb: 2,
+            borderBottom: 2,
+            color: router.pathname === "/" ? "red" : "black",
+          }}
         >
-          {categories.map((category) => {
-            return (
-              <Tab
-                label={category.attributes.Title}
-                {...a11yProps(category.id)}
+          <Link href="#">Recent</Link>
+        </Box>
+
+        {categories.map((category) => {
+          return (
+            <>
+              <Box
                 key={category.id}
-              />
-            );
-          })}
-        </Tabs>
+                sx={{
+                  mr: 3,
+                  pb: 2,
+                  borderBottom: 2,
+                  color: isActiveLink(category) ? "red" : "black",
+                }}
+              >
+                <Link href={`/category/${category.attributes.Slug}`}>
+                  {category.attributes.Title}
+                </Link>
+              </Box>
+            </>
+          );
+        })}
       </Box>
     </Box>
   );
-}
+};
+
+export default Tabs;
