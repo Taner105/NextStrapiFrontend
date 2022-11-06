@@ -51,19 +51,21 @@ export default function BasicTabs({ categories }: IPropTypes) {
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        {categories.map((category) => {
-          return (
-            <>
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label="basic tabs example"
-              >
-                <Tab label={category.attributes.Title} {...a11yProps(0)} />
-              </Tabs>
-            </>
-          );
-        })}
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
+          {categories.map((category) => {
+            return (
+              <Tab
+                label={category.attributes.Title}
+                {...a11yProps(category.id)}
+                key={category.id}
+              />
+            );
+          })}
+        </Tabs>
       </Box>
     </Box>
   );
