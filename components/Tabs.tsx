@@ -13,6 +13,7 @@ const Tabs = ({ categories }: IPropType) => {
   const isActiveLink = (category: ICategory) => {
     return category.attributes.Slug === router.query.category;
   };
+  console.log(router.query.category);
   return (
     <Box
       sx={{

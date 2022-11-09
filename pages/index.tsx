@@ -25,6 +25,8 @@ const Home = ({ categories }: IPropTypes) => {
   );
 };
 export const getServerSideProps: GetServerSideProps = async () => {
+  // const {data:articles}:AxiosResponse<ICollectionResponse<IArticle>> = await fetchCategories();
+
   const { data: categories }: AxiosResponse<ICollectionResponse<ICategory[]>> =
     await fetchCategories();
 
