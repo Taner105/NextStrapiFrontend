@@ -1,17 +1,21 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { fetchCategories } from "../utils";
+import { fetchArticles, fetchCategories } from "../utils";
 import { AxiosResponse } from "axios";
-import { ICategory, ICollectionResponse } from "../types";
+import { IArticle, ICategory, ICollectionResponse } from "../types";
 import Tabs from "../components/Tabs";
+import ArticleList from "../components/ArticleList";
 
 interface IPropTypes {
   categories: {
     items: ICategory[];
   };
+  articles: {
+    items: IArticle[];
+  };
 }
 
-const Home = ({ categories }: IPropTypes) => {
+const Home = ({ categories, articles }: IPropTypes) => {
   return (
     <>
       <Head>
@@ -21,11 +25,13 @@ const Home = ({ categories }: IPropTypes) => {
       </Head>
 
       <Tabs categories={categories.items} />
+      <ArticleList articles={articles.items} />
     </>
   );
 };
 export const getServerSideProps: GetServerSideProps = async () => {
-  // const {data:articles}:AxiosResponse<ICollectionResponse<IArticle>> = await fetchArticles();
+  const { data: articles }: AxiosResponse<ICollectionResponse<IArticle[]>> =
+    await fetchArticles();
 
   const { data: categories }: AxiosResponse<ICollectionResponse<ICategory[]>> =
     await fetchCategories();
@@ -34,6 +40,10 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       categories: {
         items: categories.data,
+      },
+      articles: {
+        items: articles.data,
+        pagination: articles.meta.pagination,
       },
     },
   };
