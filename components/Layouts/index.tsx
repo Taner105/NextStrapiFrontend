@@ -7,15 +7,11 @@ interface Props {
 
 const index = ({ children }: Props) => {
   return (
-    <Box
-      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-    >
-      <Box sx={{ width: "90%" }}>
-        <Navbar />
-        <div>{children}</div>
-        <Footer />
-      </Box>
-    </Box>
+    <>
+      <Navbar />
+      <div>{children}</div>
+      <Footer />
+    </>
   );
 };
 export default index;

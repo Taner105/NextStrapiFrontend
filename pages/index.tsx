@@ -5,6 +5,7 @@ import { AxiosResponse } from "axios";
 import { IArticle, ICategory, ICollectionResponse } from "../types";
 import Tabs from "../components/Tabs";
 import ArticleList from "../components/ArticleList";
+import useSWR from "swr";
 
 interface IPropTypes {
   categories: {
